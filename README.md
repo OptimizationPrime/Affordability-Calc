@@ -36,6 +36,14 @@ function fancyAlert(arg) {
 - [ ] this is a complete item
 - [ ] this is an incomplete item
 
-### CRUD
+## CRUD
+
+*  Include in your API info
+  *  Method (GET/POST/etc)
+  *  Endpoint
+  *  Path params 
+  *  Request body
+  *  Response object
+
 
 
