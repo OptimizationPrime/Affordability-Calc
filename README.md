@@ -2,7 +2,7 @@
 
 *  Create
    *  Method: POST
-   *  Endpoint: /mortgage/prices
+   *  Endpoint: `/mortgage/prices`
    *  Path params:
    *  Request body:
       ```javascript
@@ -24,8 +24,8 @@
 
 *  Read
    *  Method: GET
-   *  Endpoint: /mortgage/prices/:propertyId
-   *  Path params: req.params.propertyId
+   *  Endpoint: `/mortgage/prices/:propertyId`
+   *  Path params: `req.params.propertyId`
    *  Request body:
    *  Response object:
       HTTP Status 200
@@ -38,16 +38,13 @@
       }
       ```
       
-
-      
 *  Update
    *  Method: PUT
-   *  Endpoint: /mortgage/prices/:propertyId
-   *  Path params: req.params.propertyId
+   *  Endpoint: `/mortgage/prices/:propertyId`
+   *  Path params: `req.params.propertyId`
    *  Request body:
       ```javascript
       {
-          "id" : 111,
           "homePrice" : 222222,
       }
       ```
@@ -75,7 +72,4 @@
           ok: 1 
       }
       ```
-  
-
-
-
+ 
