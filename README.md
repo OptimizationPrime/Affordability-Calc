@@ -25,7 +25,7 @@
 *  Read
    *  Method: GET
    *  Endpoint: `/mortgage/prices/:propertyId`
-   *  Path params: `req.params.propertyId`
+   *  Path params: `propertyId`
    *  Request body:
    *  Response object:
       HTTP Status 200
@@ -41,7 +41,7 @@
 *  Update
    *  Method: PUT
    *  Endpoint: `/mortgage/prices/:propertyId`
-   *  Path params: `req.params.propertyId`
+   *  Path params: `propertyId`
    *  Request body:
       ```javascript
       {
@@ -62,7 +62,7 @@
 *  Delete
    *  Method: DELETE
    *  Endpoint: `/mortgage/prices/:propertyId`
-   *  Path params: `req.params.propertyId`
+   *  Path params: `propertyId`
    *  Request body:
    *  Response object:
       HTTP Status 200
