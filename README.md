@@ -61,8 +61,8 @@
       
 *  Delete
    *  Method: DELETE
-   *  Endpoint: /mortgage/prices/:propertyId
-   *  Path params: req.params.propertyId
+   *  Endpoint: `/mortgage/prices/:propertyId`
+   *  Path params: `req.params.propertyId`
    *  Request body:
    *  Response object:
       HTTP Status 200
