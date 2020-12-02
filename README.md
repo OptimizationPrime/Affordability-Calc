@@ -4,6 +4,9 @@
    *  Method: GET
    *  Endpoint: /mortgage/prices
    *  Path params:
+   
+   *  Request body:
+   
    *  Response object:
       ```javascript
       {
