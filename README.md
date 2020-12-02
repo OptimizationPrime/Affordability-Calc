@@ -1,6 +1,6 @@
 # API Documentation
 
-## *  List properties
+__*  List properties__
    *  Method: GET
    *  Endpoint: /mortgage/prices
    *  Path params:
