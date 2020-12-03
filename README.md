@@ -2,13 +2,15 @@
 
 *  Create
    *  Method: POST
-   *  Endpoint: `/mortgage/prices`
+   *  Endpoint: `/properties`
    *  Path params:
    *  Request body:
       ```javascript
       {
           "id" : "Number",
-          "homePrice" : "Number",
+          "mortgage" : {
+              "price" : "Number"
+          }
       }
       ```
    *  Response object:
@@ -24,7 +26,7 @@
 
 *  Read
    *  Method: GET
-   *  Endpoint: `/mortgage/prices/:propertyId`
+   *  Endpoint: `/properties/:propertyId`
    *  Path params: `propertyId`
    *  Request body:
    *  Response object:
@@ -39,8 +41,8 @@
       ```
       
 *  Update
-   *  Method: PUT
-   *  Endpoint: `/mortgage/prices/:propertyId`
+   *  Method: PATCH
+   *  Endpoint: `/properties/:propertyId`
    *  Path params: `propertyId`
    *  Request body:
       ```javascript
@@ -61,7 +63,7 @@
       
 *  Delete
    *  Method: DELETE
-   *  Endpoint: `/mortgage/prices/:propertyId`
+   *  Endpoint: `/properties/:propertyId`
    *  Path params: `propertyId`
    *  Request body:
    *  Response object:
