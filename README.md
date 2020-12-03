@@ -17,10 +17,10 @@
       HTTP Status 201
       ```javascript
       {
-          "_id" : "String",
           "id" : "Number",
-          "homePrice" : "Number",
-          "__v" : "Number"
+          "mortgage" : {
+              "price" : "Number"
+          }
       }
       ```
 
@@ -33,10 +33,10 @@
       HTTP Status 200
       ```javascript
       {
-          "_id" : "String",
           "id" : "Number",
-          "homePrice" : "Number",
-          "__v" : "Number"
+          "mortgage" : {
+              "price" : "Number"
+          }
       }
       ```
       
@@ -47,17 +47,20 @@
    *  Request body:
       ```javascript
       {
-          "homePrice" : "Number",
+          "id" : "Number",
+          "mortgage" : {
+              "price" : "Number"
+          }
       }
       ```
    *  Response object:
       HTTP Status 204
       ```javascript
       {
-          "_id" : "String",
           "id" : "Number",
-          "homePrice" : "Number",
-          "__v" : "Number"
+          "mortgage" : {
+              "price" : "Number"
+          }
       }
       ```
       
