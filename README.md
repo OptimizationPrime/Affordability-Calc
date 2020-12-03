@@ -7,18 +7,18 @@
    *  Request body:
       ```javascript
       {
-          "id" : 111,
-          "homePrice" : 111111,
+          "id" : "Number",
+          "homePrice" : "Number",
       }
       ```
    *  Response object:
       HTTP Status 201
       ```javascript
       {
-          "_id" : ObjectId("5fc6edded90388a631148601"),
-          "id" : 111,
-          "homePrice" : 111111,
-          "__v" : 0
+          "_id" : "String",
+          "id" : "Number",
+          "homePrice" : "Number",
+          "__v" : "Number"
       }
       ```
 
@@ -31,10 +31,10 @@
       HTTP Status 200
       ```javascript
       {
-          "_id" : ObjectId("5fc6edded90388a631148601"),
-          "id" : 111,
-          "homePrice" : 111111,
-          "__v" : 0
+          "_id" : "String",
+          "id" : "Number",
+          "homePrice" : "Number",
+          "__v" : "Number"
       }
       ```
       
@@ -45,17 +45,17 @@
    *  Request body:
       ```javascript
       {
-          "homePrice" : 222222,
+          "homePrice" : "Number",
       }
       ```
    *  Response object:
-      HTTP Status 200
+      HTTP Status 204
       ```javascript
       {
-          "_id" : ObjectId("5fc6edded90388a631148601"),
-          "id" : 111,
-          "homePrice" : 222222,
-          "__v" : 0
+          "_id" : "String",
+          "id" : "Number",
+          "homePrice" : "Number",
+          "__v" : "Number"
       }
       ```
       
@@ -65,7 +65,7 @@
    *  Path params: `propertyId`
    *  Request body:
    *  Response object:
-      HTTP Status 200
+      HTTP Status 204
       ```javascript
       { 
           n: 1, 
