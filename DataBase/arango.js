@@ -35,10 +35,10 @@ const Property = {
 const User = {
   _key: 'auto generated string',
   _Id: 'User/_key',
-  lastName: 'sting',
-  firstName: 'sting',
-  email: 'sting',
-  phoneNumber: 'sting',
+  lastName: 'string',
+  firstName: 'string',
+  email: 'string',
+  phoneNumber: 'string',
 };
 
 const Mortgage = {
@@ -46,9 +46,8 @@ const Mortgage = {
   _Id: 'Mortgage/_key',
   _from: 'Property/_key',
   _to: 'User/_key',
-  userId: 'string',
-  downPayment: 'string',
+  downPayment: 'number',
   loanProgram: 'string',
-  interestRate: 'string',
-  createdAt: 'string',
+  interestRate: 'number',
+  createdAt: 'date',
 };
