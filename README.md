@@ -1,5 +1,7 @@
 # API Documentation
 
+## CRUD
+
 *  Create
    *  Method: POST
    *  Endpoint: `/properties`
@@ -7,63 +9,84 @@
    *  Request body:
       ```javascript
       {
-          "id" : "Number",
-          "mortgage" : {
-              "price" : "Number"
-          }
+        address1: 'string',
+        address2: 'string',
+        city: 'string',
+        states: 'string',
+        zipcode: 'string',
+        types: 'string',
+        price: 'number',
       }
       ```
    *  Response object:
       HTTP Status 201
       ```javascript
       {
-          "id" : "Number",
-          "mortgage" : {
-              "price" : "Number"
-          }
+        _Id: 'string',
+        address1: 'string',
+        address2: 'string',
+        city: 'string',
+        states: 'string',
+        zipcode: 'string',
+        types: 'string',
+        price: 'number',
       }
       ```
 
 *  Read
    *  Method: GET
-   *  Endpoint: `/properties/:propertyId`
+   *  Endpoint: `/properties/:propertyId/mortgages`
    *  Path params: `propertyId`
    *  Request body:
    *  Response object:
       HTTP Status 200
       ```javascript
-      {
-          "id" : "Number",
-          "mortgage" : {
-              "price" : "Number"
-          }
-      }
+      [
+        {
+            _Id: 'string',
+            propertyId: 'string',
+            userId: 'string',
+            downPayment: 'string',
+            loanProgram: 'string',
+            interestRate: 'string',
+            createdAt: 'string',
+        },
+        {
+            _Id: 'string',
+            propertyId: 'string',
+            userId: 'string',
+            downPayment: 'string',
+            loanProgram: 'string',
+            interestRate: 'string',
+            createdAt: 'string',
+        },
+        .....
+      ]
       ```
-      
+
 *  Update
    *  Method: PATCH
-   *  Endpoint: `/properties/:propertyId`
-   *  Path params: `propertyId`
+   *  Endpoint: `/users/:userId`
+   *  Path params: `userId`
    *  Request body:
       ```javascript
       {
-          "id" : "Number",
-          "mortgage" : {
-              "price" : "Number"
-          }
+        _Id: 'string',
+        phoneNumber: 'string',
       }
       ```
    *  Response object:
       HTTP Status 204
       ```javascript
       {
-          "id" : "Number",
-          "mortgage" : {
-              "price" : "Number"
-          }
+        _Id: 'string',
+        lastName: 'string',
+        firstName: 'string',
+        email: 'string',
+        phoneNumber: 'string',
       }
       ```
-      
+
 *  Delete
    *  Method: DELETE
    *  Endpoint: `/properties/:propertyId`
@@ -71,10 +94,3 @@
    *  Request body:
    *  Response object:
       HTTP Status 204
-      ```javascript
-      { 
-          n: 1, 
-          ok: 1 
-      }
-      ```
- 
