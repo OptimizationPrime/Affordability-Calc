@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "react-dev": "webpack -d --watch",
+    "react-dev": "webpack -w",
     "production": "webpack",
     "test": "jest",
     "start": "nodemon server/index.js",
