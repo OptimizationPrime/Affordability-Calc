@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-const schema = require('../DataBase/schema.js');
+const schema = require('../DataBase/schema');
 const mongo = require('../DataBase/mongo');
 
 module.exports = {
