@@ -1,24 +1,24 @@
 /* eslint-disable no-console */
-// const { Database, aql } = require('arangojs');
-// const graphModule = require('@arangodb/general-graph');
+const { Database, aql } = require('arangojs');
+const graphModule = require('@arangodb/general-graph');
 
-// const db = new Database({
-//   url: 'http://localhost:8529',
-// });
+const db = new Database({
+  url: 'http://localhost:8529',
+});
 
-// db.createDatabase('trulia').then(
-//   (info) => {
-//     console.log(info);
-//   },
-//   (err) => console.error(err.stack),
-// );
+db.createDatabase('trulia').then(
+  (info) => {
+    console.log(info);
+  },
+  (err) => console.error(err.stack),
+);
 
-// db.useDatabase('trulia');
-// db.useBasicAuth('root', '');
+db.useDatabase('trulia');
+db.useBasicAuth('root', '');
 
-// db._create(Property);
-// db._create(User);
-// db._create(Mortgage);
+db._create(Property);
+db._create(User);
+db._create(Mortgage);
 
 const Property = {
   _key: 'auto generated string',
