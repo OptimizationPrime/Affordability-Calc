@@ -1,12 +1,13 @@
+/* eslint no-console: "error" */
 const fs = require('fs');
 const faker = require('faker');
 const { argv } = require('yargs');
 const { v4: uuidv4 } = require('uuid');
 
-const lines = argv.lines || 100;
-const property = argv.output || 'properties.csv';
-const user = argv.output || 'users.csv';
-const mortgage = argv.output || 'mortgages.csv';
+const lines = argv.lines || 10000;
+const property = argv.output || './dataGen/properties.csv';
+const user = argv.output || './dataGen/users.csv';
+const mortgage = argv.output || './dataGen/mortgages.csv';
 
 const propertyStream = fs.createWriteStream(property);
 const userStream = fs.createWriteStream(user);
@@ -19,8 +20,8 @@ const userIdPool = [];
 const propertyType = ['Single family home', 'Townhouse', 'Condo - 4 or fewer stories', 'Condo - 5+ stories', 'Cooperative', 'Mobile or manufactured', 'Modular', 'Leasehold'];
 
 const createProperty = () => {
-  const id = uuidv4();
-  propertyIdPool.push(id);
+  const propertyId = uuidv4();
+  propertyIdPool.push(propertyId);
   const address1 = faker.address.streetAddress();
   const address2 = faker.address.secondaryAddress();
   const city = faker.address.city();
@@ -29,33 +30,33 @@ const createProperty = () => {
   const types = faker.random.arrayElement(propertyType);
   const price = faker.random.number({ min: 100000, max: 30000000 });
 
-  return `${id},${address1},${address2},${city},${states},${zipcode},${types},${zipcode},${price}\n`;
+  return `${propertyId},${address1},${address2},${city},${states},${zipcode},${types},${price}\n`;
 };
 
 // user data generation
 const createUser = () => {
-  const id = uuidv4();
-  userIdPool.push(id);
+  const userId = uuidv4();
+  userIdPool.push(userId);
   const name = faker.name.findName();
   const email = faker.internet.email();
   const phoneNumber = faker.phone.phoneNumberFormat();
 
-  return `${id},${name},${email},${phoneNumber}\n`;
+  return `${userId},${name},${email},${phoneNumber}\n`;
 };
 
 // mortgage data generation
 const loanType = ['30 year fixed', '20 year fixed', '15 year fixed', '10 year fixed', '7/1 ARM', '5/1 ARM', '3/1 ARM'];
 
 const createMortgage = () => {
-  const id = uuidv4();
+  const mortgageId = uuidv4();
   const propertyId = faker.random.arrayElement(propertyIdPool);
   const userId = faker.random.arrayElement(userIdPool);
   const downPayment = faker.finance.amount(0.0, 0.5, 2);
   const loanProgram = faker.random.arrayElement(loanType);
   const interestRate = faker.finance.amount(2.50, 6.50, 2);
-  const createdAt = faker.date.recent(90);
+  const createdAt = faker.date.recent(90).toISOString();
 
-  return `${id},${propertyId},${userId},${downPayment},${loanProgram},${interestRate},${createdAt}\n`;
+  return `${mortgageId},${propertyId},${userId},${downPayment},${loanProgram},${interestRate},${createdAt}\n`;
 };
 
 const startWritingProperty = (writeStream, encoding, done) => {
@@ -99,7 +100,7 @@ const startWritingUser = (writeStream, encoding, done) => {
 };
 
 const startWritingMortgage = (writeStream, encoding, done) => {
-  let i = lines;
+  let i = lines / 3;
   const writing = () => {
     const canWrite = true;
     do {
@@ -118,18 +119,29 @@ const startWritingMortgage = (writeStream, encoding, done) => {
   writing();
 };
 
-propertyStream.write(`id,address1,address2,city,states,zipcode,types,zipcode,price\n`, 'utf-8');
-userStream.write(`id,name,email,phoneNumber\n`, 'utf-8');
-mortgageStream.write(`id,propertyId,userId,downPayment,loanProgram,interestRate,createdAt\n`, 'utf-8');
+const execTimeMeasure = () => {
+  // const startTime = process.hrtime();
+  // eslint-disable-next-line no-console
+  console.time(`Execution time for ${lines}lines`);
 
-startWritingProperty(propertyStream, 'utf-8', () => {
-  propertyStream.end();
-});
+  propertyStream.write('propertyId,address1,address2,city,states,zipcode,types,price\n', 'utf-8');
+  userStream.write('userId,name,email,phoneNumber\n', 'utf-8');
+  mortgageStream.write('mortgageId,propertyId,userId,downPayment,loanProgram,interestRate,createdAt\n', 'utf-8');
 
-startWritingUser(userStream, 'utf-8', () => {
-  userStream.end();
-});
+  startWritingProperty(propertyStream, 'utf-8', () => {
+    propertyStream.end();
+  });
 
-startWritingMortgage(mortgageStream, 'utf-8', () => {
-  mortgageStream.end();
-});
+  startWritingUser(userStream, 'utf-8', () => {
+    userStream.end();
+  });
+
+  startWritingMortgage(mortgageStream, 'utf-8', () => {
+    mortgageStream.end();
+  });
+
+  // eslint-disable-next-line no-console
+  console.timeEnd(`Execution time for ${lines}lines`);
+};
+
+execTimeMeasure();
