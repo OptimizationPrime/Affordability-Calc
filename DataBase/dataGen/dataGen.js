@@ -1,13 +1,16 @@
-/* eslint no-console: "error" */
 const fs = require('fs');
 const faker = require('faker');
 const { argv } = require('yargs');
 const { v4: uuidv4 } = require('uuid');
 
-const lines = argv.lines || 10000;
+const lines = argv.lines || 10000000;
 const property = argv.output || './dataGen/properties.csv';
 const user = argv.output || './dataGen/users.csv';
 const mortgage = argv.output || './dataGen/mortgages.csv';
+const table = argv.table || 'mortgage';
+
+// eslint-disable-next-line no-console
+console.time(`Execution time for ${lines}lines`);
 
 const propertyStream = fs.createWriteStream(property);
 const userStream = fs.createWriteStream(user);
@@ -62,14 +65,14 @@ const createMortgage = () => {
 const startWritingProperty = (writeStream, encoding, done) => {
   let i = lines;
   const writing = () => {
-    const canWrite = true;
+    let canWrite = true;
     do {
       i -= 1;
       const model = createProperty();
       if (i === 0) {
         writeStream.write(model, encoding, done);
       } else {
-        writeStream.write(model, encoding);
+        canWrite = writeStream.write(model, encoding);
       }
     } while (i > 0 && canWrite);
     if (i > 0 && !canWrite) {
@@ -82,14 +85,14 @@ const startWritingProperty = (writeStream, encoding, done) => {
 const startWritingUser = (writeStream, encoding, done) => {
   let i = lines;
   const writing = () => {
-    const canWrite = true;
+    let canWrite = true;
     do {
       i -= 1;
       const model = createUser();
       if (i === 0) {
         writeStream.write(model, encoding, done);
       } else {
-        writeStream.write(model, encoding);
+        canWrite = writeStream.write(model, encoding);
       }
     } while (i > 0 && canWrite);
     if (i > 0 && !canWrite) {
@@ -102,14 +105,14 @@ const startWritingUser = (writeStream, encoding, done) => {
 const startWritingMortgage = (writeStream, encoding, done) => {
   let i = lines / 3;
   const writing = () => {
-    const canWrite = true;
+    let canWrite = true;
     do {
       i -= 1;
       const model = createMortgage();
       if (i === 0) {
         writeStream.write(model, encoding, done);
       } else {
-        writeStream.write(model, encoding);
+        canWrite = writeStream.write(model, encoding);
       }
     } while (i > 0 && canWrite);
     if (i > 0 && !canWrite) {
@@ -122,26 +125,29 @@ const startWritingMortgage = (writeStream, encoding, done) => {
 const execTimeMeasure = () => {
   // const startTime = process.hrtime();
   // eslint-disable-next-line no-console
-  console.time(`Execution time for ${lines}lines`);
 
-  propertyStream.write('propertyId,address1,address2,city,states,zipcode,types,price\n', 'utf-8');
-  userStream.write('userId,name,email,phoneNumber\n', 'utf-8');
-  mortgageStream.write('mortgageId,propertyId,userId,downPayment,loanProgram,interestRate,createdAt\n', 'utf-8');
+  if (table === 'property') {
+    propertyStream.write('propertyId,address1,address2,city,states,zipcode,types,price\n', 'utf-8');
+    startWritingProperty(propertyStream, 'utf-8', () => {
+      propertyStream.end();
+    });
+  }
 
-  startWritingProperty(propertyStream, 'utf-8', () => {
-    propertyStream.end();
-  });
+  if (table === 'users') {
+    userStream.write('userId,name,email,phoneNumber\n', 'utf-8');
+    startWritingUser(userStream, 'utf-8', () => {
+      userStream.end();
+    });
+  }
 
-  startWritingUser(userStream, 'utf-8', () => {
-    userStream.end();
-  });
-
-  startWritingMortgage(mortgageStream, 'utf-8', () => {
-    mortgageStream.end();
-  });
-
-  // eslint-disable-next-line no-console
-  console.timeEnd(`Execution time for ${lines}lines`);
+  if (table === 'mortgage') {
+    mortgageStream.write('mortgageId,propertyId,userId,downPayment,loanProgram,interestRate,createdAt\n', 'utf-8');
+    startWritingMortgage(mortgageStream, 'utf-8', () => {
+      mortgageStream.end();
+    });
+  }
 };
 
 execTimeMeasure();
+// eslint-disable-next-line no-console
+console.timeEnd(`Execution time for ${lines}lines`);

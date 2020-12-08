@@ -29,11 +29,11 @@ psql -U $USER -d postgres -a < $SCHEMA
 
 ### Run Our Generator Script ###
 # node generator.js --output=$FILEPATH --lines=$LINES
-node dataGen/dataGen.js
+node dataGen/dataGen.js --table=$TABLE2 --lines=10000000
 
 ### Import Our posts.csv file to seed Database ###
-psql -U $USER -d $DATABASE -c "COPY $TABLE1 FROM '$FILEPATH1' DELIMITER ',' CSV HEADER";
+# psql -U $USER -d $DATABASE -c "COPY $TABLE1 FROM '$FILEPATH1' DELIMITER ',' CSV HEADER";
 
 psql -U $USER -d $DATABASE -c "COPY $TABLE2 FROM '$FILEPATH2' DELIMITER ',' CSV HEADER";
 
-psql -U $USER -d $DATABASE -c "COPY $TABLE3 FROM '$FILEPATH3' DELIMITER ',' CSV HEADER";
+# psql -U $USER -d $DATABASE -c "COPY $TABLE3 FROM '$FILEPATH3' DELIMITER ',' CSV HEADER";
