@@ -4,6 +4,10 @@ CREATE DATABASE trulia;
 
 \c trulia
 
+DROP TABLE IF EXISTS property;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS mortgage;
+
 CREATE TABLE property(
   id CHAR(36) PRIMARY KEY,
   address1 VARCHAR(30) NOT NULL,
