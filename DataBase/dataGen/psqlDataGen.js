@@ -7,10 +7,14 @@ const lines = argv.lines || 10000000;
 const property = argv.output || './dataGen/properties.csv';
 const user = argv.output || './dataGen/users.csv';
 const mortgage = argv.output || './dataGen/mortgages.csv';
-const table = argv.table || 'mortgage';
+// const table = argv.table || 'mortgage';
 
 // eslint-disable-next-line no-console
-console.time(`Execution time for ${lines}lines`);
+console.time(`Execution time for Property data of ${lines}lines`);
+// eslint-disable-next-line no-console
+console.time(`Execution time for User data of ${lines}lines`);
+// eslint-disable-next-line no-console
+console.time(`Execution time for Mortgage data of ${Math.floor(lines / 3)}lines`);
 
 const propertyStream = fs.createWriteStream(property);
 const userStream = fs.createWriteStream(user);
@@ -122,32 +126,55 @@ const startWritingMortgage = (writeStream, encoding, done) => {
   writing();
 };
 
-const execTimeMeasure = () => {
-  // const startTime = process.hrtime();
+// const execTimeMeasure = () => {
+//   // const startTime = process.hrtime();
+//   // eslint-disable-next-line no-console
+
+//   if (table === 'property') {
+//     propertyStream.write('propertyId,address1,address2,city,states,zipcode,types,price\n', 'utf-8');
+//     startWritingProperty(propertyStream, 'utf-8', () => {
+//       propertyStream.end();
+//       // eslint-disable-next-line no-console
+//       console.timeEnd(`Execution time for ${lines}lines`);
+//     });
+//   }
+
+//   if (table === 'users') {
+//     userStream.write('userId,name,email,phoneNumber\n', 'utf-8');
+//     startWritingUser(userStream, 'utf-8', () => {
+//       userStream.end();
+//       // eslint-disable-next-line no-console
+//       console.timeEnd(`Execution time for ${lines}lines`);
+//     });
+//   }
+
+//   if (table === 'mortgage') {
+//     mortgageStream.write('mortgageId,propertyId,userId,downPayment,loanProgram,interestRate,createdAt\n', 'utf-8');
+//     startWritingMortgage(mortgageStream, 'utf-8', () => {
+//       mortgageStream.end();
+//       // eslint-disable-next-line no-console
+//       console.timeEnd(`Execution time for ${Math.floor(lines / 3)}lines`);
+//     });
+//   }
+// };
+
+propertyStream.write('propertyId,address1,address2,city,states,zipcode,types,price\n', 'utf-8');
+startWritingProperty(propertyStream, 'utf-8', () => {
+  propertyStream.end();
   // eslint-disable-next-line no-console
+  console.timeEnd(`Execution time for Property data of ${lines}lines`);
+});
 
-  if (table === 'property') {
-    propertyStream.write('propertyId,address1,address2,city,states,zipcode,types,price\n', 'utf-8');
-    startWritingProperty(propertyStream, 'utf-8', () => {
-      propertyStream.end();
-    });
-  }
+userStream.write('userId,name,email,phoneNumber\n', 'utf-8');
+startWritingUser(userStream, 'utf-8', () => {
+  userStream.end();
+  // eslint-disable-next-line no-console
+  console.timeEnd(`Execution time for User data of ${lines}lines`);
+});
 
-  if (table === 'users') {
-    userStream.write('userId,name,email,phoneNumber\n', 'utf-8');
-    startWritingUser(userStream, 'utf-8', () => {
-      userStream.end();
-    });
-  }
-
-  if (table === 'mortgage') {
-    mortgageStream.write('mortgageId,propertyId,userId,downPayment,loanProgram,interestRate,createdAt\n', 'utf-8');
-    startWritingMortgage(mortgageStream, 'utf-8', () => {
-      mortgageStream.end();
-    });
-  }
-};
-
-execTimeMeasure();
-// eslint-disable-next-line no-console
-console.timeEnd(`Execution time for ${lines}lines`);
+mortgageStream.write('mortgageId,propertyId,userId,downPayment,loanProgram,interestRate,createdAt\n', 'utf-8');
+startWritingMortgage(mortgageStream, 'utf-8', () => {
+  mortgageStream.end();
+  // eslint-disable-next-line no-console
+  console.timeEnd(`Execution time for Mortgage data of ${Math.floor(lines / 3)}lines`);
+});
