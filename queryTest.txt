@@ -1,0 +1,43 @@
+postgresql
+
+EXPLAIN ANALYSE
+SELECT
+    users.id,
+    name,
+    city || ', ' || states,
+    createdat
+FROM
+    users
+INNER JOIN mortgage
+    ON users.id = '843c7f40-463e-4924-bd4f-2b9070c9d8eb'
+INNER JOIN property
+    ON property.id = mortgage.propertyid
+ORDER BY createdat
+LIMIT(10);
+
+
+ArangoDB
+
+ca0ef8ca-e691-4125-986b-16f34780cdba
+
+db.users.byExample({ "_key" : "ca0ef8ca-e691-4125-986b-16f34780cdba" }).toArray();
+
+db._query(`FOR i IN users RETURN u._key`).getExtra();
+
+db._query("FOR x IN UNION_DISTINCT (
+    (FOR y IN ANY 'movies/TheMatrix' actsIn OPTIONS {bfs: true, uniqueVertices: 'global'} RETURN y._id),
+    (FOR y IN ANY 'movies/TheDevilsAdvocate' actsIn OPTIONS {bfs: true, uniqueVertices: 'global'} RETURN y._id)
+) RETURN x").toArray();
+
+db._query(`FOR i IN users FILTER i._key == "4d14c533-6272-4c61-afaa-8c8247f374d3" RETURN i`).toArray();
+db._query(`
+    FOR u IN users
+        FILTER u._key == "fbdceaef-e549-437a-b2b7-5e0650f71f1e"
+        FOR m IN mortgage
+            FILTER u._id == m._from
+                FOR p IN property
+                    FILTER m._to == p._id
+                        SORT m.createdAt
+                            RETURN { city: p.city, states: p.states, createdat: m.createdAt }
+`).toArray();
+db._query(`FOR i IN users FILTER i.name == "Anna Haley" RETURN i`).toArray();
