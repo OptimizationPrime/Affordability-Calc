@@ -1,17 +1,29 @@
+require('newrelic');
 /* eslint-disable no-console */
 const express = require('express');
-const mongoCont = require('../controller/mongo.js');
-// const path = require('path')
+// const mongoCont = require('../controller/mongo.js');
+const path = require('path');
+const parser = require('body-parser');
+// arangoDB connection
+const arangoConnection = require('../controller/arango');
 
 const app = express();
 const PORT = 8020;
 
-app.use(express.json());
-app.use('/mortgage/:id', express.static('client/dist'));
+const publicPath = path.join(__dirname, '..', 'client', 'dist');
+app.use(express.static(publicPath));
+app.use(parser.json());
+
+app.get('/listings/:id/price', arangoConnection.getPropertyPrice);
+app.get('/listings/:id/mortgages', arangoConnection.getMortgageList);
+app.post('/listings/:id/property', arangoConnection.addProperty);
+// app.get('/listings/:id/price', (req, res) => {
+//   console.log(req.params.id);
+// });
 
 app.listen(PORT, () => {
-  console.log(`Listening on 127.0.0.1:${PORT}`);
+  console.log(`Listening on http://localhost:${PORT}`);
 });
 
-app.get('*/:id/db', mongoCont.get);
+// app.get('*/:id/db', mongoCont.get);
 // app.get('dbs', mongoCont.getAll);

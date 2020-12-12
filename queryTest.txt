@@ -2,18 +2,16 @@ postgresql
 
 EXPLAIN ANALYSE
 SELECT
-    users.id,
-    name,
-    city || ', ' || states,
-    createdat
+    city,
+    states,
+    createdAt
 FROM
-    users
-INNER JOIN mortgage
-    ON users.id = '843c7f40-463e-4924-bd4f-2b9070c9d8eb'
-INNER JOIN property
-    ON property.id = mortgage.propertyid
-ORDER BY createdat
-LIMIT(10);
+    mortgage, property
+WHERE
+    mortgage.userId = '745fefcf-ddbe-41af-8b32-5f9a8bd7fd80' AND mortgage.propertyId = property.id
+ORDER BY createdAt;
+
+
 
 
 ArangoDB
@@ -41,3 +39,14 @@ db._query(`
                             RETURN { city: p.city, states: p.states, createdat: m.createdAt }
 `).toArray();
 db._query(`FOR i IN users FILTER i.name == "Anna Haley" RETURN i`).toArray();
+
+
+
+    FOR p IN property
+        FILTER p._key == ${id}
+            FOR m IN mortgage
+                FILTER p._id == m._to
+                    FOR u IN users
+                        FILTER m._from == u._id
+                            SORT m.createdAt
+                                RETURN { name: u.name, city: p.city, states: p.states, createdat: m.createdAt }
