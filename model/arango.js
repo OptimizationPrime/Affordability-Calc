@@ -40,8 +40,15 @@ const findPropertyPrice = (id, callback) => {
   );
 };
 
-const createProperty = () => {
-
+const createProperty = (doc, callback) => {
+  db.query(aql`
+    INSERT ${doc} INTO property
+  `).then(
+    (cursor) => cursor.all(),
+  ).then(
+    (result) => callback(null, result),
+    (err) => callback(err),
+  );
 };
 
 module.exports = {
