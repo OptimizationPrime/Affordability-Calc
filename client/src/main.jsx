@@ -4,19 +4,16 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 // Controllers
-
 import Price from './controllers/price';
 import Down from './controllers/down';
 import Interest from './controllers/interest';
 import Loan from './controllers/loan';
 
 // Raw Components
-
 import Svg from './svg';
 import Data from './data';
 
 // Styles
-
 import Label from './styles/label';
 import DarkBox from './styles/darkBox';
 import Title from './styles/title';
