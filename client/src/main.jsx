@@ -55,11 +55,11 @@ export default function Main() {
   useEffect(() => {
     axios({
       method: 'get',
-      url: `${window.location.pathname}price`,
+      url: `/api/listings${window.location.pathname}price`,
     })
       .then((res) => {
-        setHomePrice(res.data.price);
-        setDownPayment(res.data.price * (downPaymentRate / 100));
+        setHomePrice(res.data[0].price);
+        setDownPayment(res.data[0].price * (downPaymentRate / 100));
       })
       .catch((err) => {
         console.log(err);
