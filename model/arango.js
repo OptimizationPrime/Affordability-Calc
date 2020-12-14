@@ -3,7 +3,7 @@ const { aql, Database } = require('arangojs');
 const auth = require('../authentication');
 
 const db = new Database({
-  url: 'http://localhost:8000/',
+  url: 'http://13.56.224.54:8000',
   databaseName: 'trulia',
   auth: { username: auth.username, password: auth.password },
 });

@@ -1,5 +1,4 @@
 node_modules
-client/dist/bundle.js
 *.csv
 *.sql
 *.sh
@@ -8,4 +7,3 @@ client/dist/bundle.js
 
 # authentication information
 authentication.js
-dockerfile
