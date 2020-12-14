@@ -6,8 +6,9 @@
     "react-dev": "webpack -w",
     "production": "webpack",
     "test": "jest",
-    "start": "nodemon server/index.js",
-    "seed": "node seed",
+    "start:dev": "nodemon server/index.js",
+    "start": "node server/index.js",
+    "seed": "bash DataBase/arangoSeed.sh",
     "stress": "k6 run script.js"
   },
   "author": "Blake",

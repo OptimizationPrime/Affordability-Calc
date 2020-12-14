@@ -8,3 +8,4 @@ client/dist/bundle.js
 
 # authentication information
 authentication.js
+dockerfile
