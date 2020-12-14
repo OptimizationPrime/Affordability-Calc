@@ -1,6 +1,6 @@
 node_modules
 npm-debug.log
-.txt
-.sql
-.csv
-.git
+*.txt
+*.sql
+*.csv
+*.git
