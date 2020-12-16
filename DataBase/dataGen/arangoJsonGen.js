@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const fs = require('fs');
 const faker = require('faker');
 const { argv } = require('yargs');
@@ -6,14 +7,6 @@ const lines = argv.lines || 10000000;
 const property = argv.output || './dataGen/json/properties.json';
 const user = argv.output || './dataGen/json/users.json';
 const mortgage = argv.output || './dataGen/json/mortgages.json';
-// const table = argv.table || 'mortgage';
-
-// eslint-disable-next-line no-console
-console.time(`Execution time for Property data of ${lines}lines`);
-// eslint-disable-next-line no-console
-console.time(`Execution time for User data of ${lines}lines`);
-// eslint-disable-next-line no-console
-console.time(`Execution time for Mortgage data of ${lines}lines`);
 
 const propertyStream = fs.createWriteStream(property);
 const userStream = fs.createWriteStream(user);
@@ -36,7 +29,16 @@ const createProperty = (line) => {
   const types = faker.random.arrayElement(propertyType);
   const price = faker.random.number({ min: 100000, max: 30000000 });
 
-  return `${id},${address1},${address2},${city},${states},${zipcode},${types},${price}\n`;
+  return {
+    id,
+    address1,
+    address2,
+    city,
+    states,
+    zipcode,
+    types,
+    price,
+  };
 };
 
 // user data generation
@@ -47,7 +49,12 @@ const createUser = (line) => {
   const email = faker.internet.email();
   const phoneNumber = faker.phone.phoneNumberFormat();
 
-  return `${id},${name},${email},${phoneNumber}\n`;
+  return {
+    id,
+    name,
+    email,
+    phoneNumber,
+  };
 };
 
 // mortgage data generation
@@ -62,52 +69,81 @@ const createMortgage = (line) => {
   const interestRate = faker.finance.amount(2.50, 6.50, 2);
   const createdAt = faker.date.recent(90).toISOString();
 
-  return `${id},${userId},${propertyId},${downPayment},${loanProgram},${interestRate},${createdAt}\n`;
-};
-
-
-
-
-const fs = require('fs');
-const faker = require('faker');
-const { argv } = require('yargs');
-
-const lines = argv.lines || 10000;
-const filename = argv.output || 'arangoUserData.json';
-const stream = fs.createWriteStream(filename);
-
-const createPost = (i) => {
-  const _key = i.toString();
-  const username = faker.internet.userName();
-  const firstName = faker.name.firstName();
-  const lastName = faker.name.lastName();
-  const email = faker.internet.email();
-  const phone = faker.phone.phoneNumber();
-
   return {
-    _key,
-    username,
-    firstName,
-    lastName,
-    email,
-    phone,
+    id,
+    userId,
+    propertyId,
+    downPayment,
+    loanProgram,
+    interestRate,
+    createdAt,
   };
 };
 
-const seed = (writeStream, encoding, done) => {
+const startWritingProperty = (writeStream, encoding, done) => {
   let i = lines;
   function writing() {
     let ok = true;
     do {
       i -= 1;
-      const post = JSON.stringify(createPost(i));
+      const post = JSON.stringify(createProperty(i));
       // check if i === 0 so we would write and call `done`
       if (i === 0) {
         // we are done so fire callback
         writeStream.write(post, encoding, done);
       } else {
         // we are not done so don't fire callback
-        writeStream.write(post, encoding);
+        ok = writeStream.write(post, encoding);
+      }
+      writeStream.write('\n');
+      // else call write and continue looping
+    } while (i > 0 && ok);
+    if (i > 0 && !ok) {
+      writeStream.once('drain', writing);
+    }
+  }
+  writing();
+};
+
+const startWritingUser = (writeStream, encoding, done) => {
+  let i = lines;
+  function writing() {
+    let ok = true;
+    do {
+      i -= 1;
+      const post = JSON.stringify(createUser(i));
+      // check if i === 0 so we would write and call `done`
+      if (i === 0) {
+        // we are done so fire callback
+        writeStream.write(post, encoding, done);
+      } else {
+        // we are not done so don't fire callback
+        ok = writeStream.write(post, encoding);
+      }
+      writeStream.write('\n');
+      // else call write and continue looping
+    } while (i > 0 && ok);
+    if (i > 0 && !ok) {
+      writeStream.once('drain', writing);
+    }
+  }
+  writing();
+};
+
+const startWritingMortgage = (writeStream, encoding, done) => {
+  let i = lines;
+  function writing() {
+    let ok = true;
+    do {
+      i -= 1;
+      const post = JSON.stringify(createMortgage(i));
+      // check if i === 0 so we would write and call `done`
+      if (i === 0) {
+        // we are done so fire callback
+        writeStream.write(post, encoding, done);
+      } else {
+        // we are not done so don't fire callback
+        ok = writeStream.write(post, encoding);
       }
       writeStream.write('\n');
       // else call write and continue looping
@@ -121,21 +157,20 @@ const seed = (writeStream, encoding, done) => {
 
 // header line in the csv file
 // stream.write('test\n', 'utf-8');
+startWritingProperty(propertyStream, 'utf-8', () => {
+  console.time(`Execution time for Property data of ${lines}lines`);
+  propertyStream.end();
+  console.timeEnd(`Execution time for Property data of ${lines}lines`);
+});
 
+startWritingUser(userStream, 'utf-8', () => {
+  console.time(`Execution time for User data of ${lines}lines`);
+  userStream.end();
+  console.timeEnd(`Execution time for User data of ${lines}lines`);
+});
 
-async function dataGen() {
-  await seed(stream, 'utf8', () => {
-    stream.end();
-    console.log('finished seeding');
-  });
-
-  await seed(stream, 'utf8', () => {
-    stream.end();
-    console.log('finished seeding');
-  });
-
-  await seed(stream, 'utf8', () => {
-    stream.end();
-    console.log('finished seeding');
-  });
-}
+startWritingMortgage(mortgageStream, 'utf-8', () => {
+  console.time(`Execution time for Mortgage data of ${lines}lines`);
+  mortgageStream.end();
+  console.timeEnd(`Execution time for Mortgage data of ${lines}lines`);
+});
