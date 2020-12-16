@@ -18,6 +18,10 @@ app.use(parser.json());
 app.get('/api/listings/:id/price', arangoConnection.getPropertyPrice);
 app.get('/api/listings/:id/mortgages', arangoConnection.getMortgageList);
 app.post('/api/listings/property', arangoConnection.addProperty);
+const loaderio = path.join(__dirname, '..', '/loaderio-8bae603bd3e2ff296d1287165fa8c596.txt');
+app.get('/loaderio-8bae603bd3e2ff296d1287165fa8c596/', (req, res) => {
+  res.status(200).sendFile(loaderio);
+});
 
 app.listen(PORT, () => {
   console.log(`Listening on http://localhost:${PORT}`);
