@@ -1,9 +1,14 @@
 node_modules
+client/dist/bundle.js
 *.csv
 *.sql
 *.sh
 *.txt
 *.log
+*.json
 
 # authentication information
 authentication.js
+
+DataBase/dataGen/csv
+DataBase/dataGen/json

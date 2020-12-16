@@ -19,8 +19,8 @@ const userIdPool = [];
 const propertyType = ['Single family home', 'Townhouse', 'Condo - 4 or fewer stories', 'Condo - 5+ stories', 'Cooperative', 'Mobile or manufactured', 'Modular', 'Leasehold'];
 
 const createProperty = (line) => {
-  const id = line;
-  propertyIdPool.push(id);
+  const _key = line.toString();
+  propertyIdPool.push(_key);
   const address1 = faker.address.streetAddress();
   const address2 = faker.address.secondaryAddress();
   const city = faker.address.city();
@@ -30,7 +30,7 @@ const createProperty = (line) => {
   const price = faker.random.number({ min: 100000, max: 30000000 });
 
   return {
-    id,
+    _key,
     address1,
     address2,
     city,
@@ -43,14 +43,14 @@ const createProperty = (line) => {
 
 // user data generation
 const createUser = (line) => {
-  const id = line;
-  userIdPool.push(id);
+  const _key = line.toString();
+  userIdPool.push(line.toString());
   const name = faker.name.findName();
   const email = faker.internet.email();
   const phoneNumber = faker.phone.phoneNumberFormat();
 
   return {
-    id,
+    _key,
     name,
     email,
     phoneNumber,
@@ -61,18 +61,18 @@ const createUser = (line) => {
 const loanType = ['30 year fixed', '20 year fixed', '15 year fixed', '10 year fixed', '7/1 ARM', '5/1 ARM', '3/1 ARM'];
 
 const createMortgage = (line) => {
-  const id = line;
-  const userId = faker.random.arrayElement(userIdPool);
-  const propertyId = faker.random.arrayElement(propertyIdPool);
+  const _key = line.toString();
+  const _from = faker.random.arrayElement(userIdPool);
+  const _to = faker.random.arrayElement(propertyIdPool);
   const downPayment = faker.finance.amount(0.0, 0.5, 2);
   const loanProgram = faker.random.arrayElement(loanType);
   const interestRate = faker.finance.amount(2.50, 6.50, 2);
   const createdAt = faker.date.recent(90).toISOString();
 
   return {
-    id,
-    userId,
-    propertyId,
+    _key,
+    _from,
+    _to,
     downPayment,
     loanProgram,
     interestRate,

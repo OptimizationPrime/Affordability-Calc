@@ -4,9 +4,9 @@ const { argv } = require('yargs');
 const { v4: uuidv4 } = require('uuid');
 
 const lines = argv.lines || 10000000;
-const property = argv.output || './dataGen/properties.csv';
-const user = argv.output || './dataGen/users.csv';
-const mortgage = argv.output || './dataGen/mortgages.csv';
+const property = argv.output || './dataGen/json/properties.csv';
+const user = argv.output || './dataGen/json/users.csv';
+const mortgage = argv.output || './dataGen/json/mortgages.csv';
 // const table = argv.table || 'mortgage';
 
 // eslint-disable-next-line no-console

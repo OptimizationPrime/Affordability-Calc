@@ -16,7 +16,7 @@ app.use(express.static(publicPath));
 app.use(parser.json());
 
 app.get('/api/listings/:id/price', arangoConnection.getPropertyPrice);
-app.get('api/listings/:id/mortgages', arangoConnection.getMortgageList);
+app.get('/api/listings/:id/mortgages', arangoConnection.getMortgageList);
 app.post('/api/listings/property', arangoConnection.addProperty);
 
 app.listen(PORT, () => {
