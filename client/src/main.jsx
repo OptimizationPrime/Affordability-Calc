@@ -58,6 +58,7 @@ export default function Main() {
       url: `/api/listings${window.location.pathname}price`,
     })
       .then((res) => {
+        console.log(res.data[0]);
         setHomePrice(res.data[0].price);
         setDownPayment(res.data[0].price * (downPaymentRate / 100));
       })

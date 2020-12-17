@@ -4,3 +4,6 @@ npm-debug.log
 *.sql
 *.csv
 *.git
+
+DataBase/dataGen/csv
+DataBase/dataGen/json
