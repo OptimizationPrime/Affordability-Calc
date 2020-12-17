@@ -4,6 +4,7 @@ const faker = require('faker');
 const { argv } = require('yargs');
 
 const lines = argv.lines || 10000000;
+const limit = lines + 100000;
 const property = argv.output || './dataGen/json/properties.json';
 const user = argv.output || './dataGen/json/users.json';
 const mortgage = argv.output || './dataGen/json/mortgages.json';
@@ -44,7 +45,7 @@ const createProperty = (line) => {
 // user data generation
 const createUser = (line) => {
   const _key = line.toString();
-  userIdPool.push(line.toString());
+  userIdPool.push(_key);
   const name = faker.name.findName();
   const email = faker.internet.email();
   const phoneNumber = faker.phone.phoneNumberFormat();
@@ -82,23 +83,27 @@ const createMortgage = (line) => {
 
 const startWritingProperty = (writeStream, encoding, done) => {
   let i = lines;
+  let delimiter1 = '';
   function writing() {
     let ok = true;
     do {
-      i -= 1;
+      i += 1;
       const post = JSON.stringify(createProperty(i));
+      writeStream.write(delimiter1);
       // check if i === 0 so we would write and call `done`
-      if (i === 0) {
+      if (i === limit) {
         // we are done so fire callback
         writeStream.write(post, encoding, done);
       } else {
         // we are not done so don't fire callback
         ok = writeStream.write(post, encoding);
       }
-      writeStream.write('\n');
+      if (!delimiter1) {
+        delimiter1 = ',';
+      }
       // else call write and continue looping
     } while (i > 0 && ok);
-    if (i > 0 && !ok) {
+    if (i > 0) {
       writeStream.once('drain', writing);
     }
   }
@@ -107,23 +112,27 @@ const startWritingProperty = (writeStream, encoding, done) => {
 
 const startWritingUser = (writeStream, encoding, done) => {
   let i = lines;
+  let delimiter2 = '';
   function writing() {
     let ok = true;
     do {
-      i -= 1;
+      i += 1;
       const post = JSON.stringify(createUser(i));
       // check if i === 0 so we would write and call `done`
-      if (i === 0) {
+      writeStream.write(delimiter2);
+      if (i === limit) {
         // we are done so fire callback
         writeStream.write(post, encoding, done);
       } else {
         // we are not done so don't fire callback
         ok = writeStream.write(post, encoding);
       }
-      writeStream.write('\n');
+      if (!delimiter2) {
+        delimiter2 = ',';
+      }
       // else call write and continue looping
     } while (i > 0 && ok);
-    if (i > 0 && !ok) {
+    if (i > 0) {
       writeStream.once('drain', writing);
     }
   }
@@ -132,23 +141,27 @@ const startWritingUser = (writeStream, encoding, done) => {
 
 const startWritingMortgage = (writeStream, encoding, done) => {
   let i = lines;
+  let delimiter3 = '';
   function writing() {
     let ok = true;
     do {
-      i -= 1;
+      i += 1;
       const post = JSON.stringify(createMortgage(i));
       // check if i === 0 so we would write and call `done`
-      if (i === 0) {
+      writeStream.write(delimiter3);
+      if (i === limit) {
         // we are done so fire callback
         writeStream.write(post, encoding, done);
       } else {
         // we are not done so don't fire callback
         ok = writeStream.write(post, encoding);
       }
-      writeStream.write('\n');
+      if (!delimiter3) {
+        delimiter3 = ',';
+      }
       // else call write and continue looping
     } while (i > 0 && ok);
-    if (i > 0 && !ok) {
+    if (i > 0) {
       writeStream.once('drain', writing);
     }
   }
@@ -157,20 +170,26 @@ const startWritingMortgage = (writeStream, encoding, done) => {
 
 // header line in the csv file
 // stream.write('test\n', 'utf-8');
+propertyStream.write('[', 'utf-8');
+console.time(`Execution time for Property data of ${lines}lines`);
 startWritingProperty(propertyStream, 'utf-8', () => {
-  console.time(`Execution time for Property data of ${lines}lines`);
-  propertyStream.end();
+  propertyStream.write(']', 'utf-8');
   console.timeEnd(`Execution time for Property data of ${lines}lines`);
+  propertyStream.end();
 });
 
+userStream.write('[', 'utf-8');
+console.time(`Execution time for User data of ${lines}lines`);
 startWritingUser(userStream, 'utf-8', () => {
-  console.time(`Execution time for User data of ${lines}lines`);
-  userStream.end();
+  userStream.write(']', 'utf-8');
   console.timeEnd(`Execution time for User data of ${lines}lines`);
+  userStream.end();
 });
 
+mortgageStream.write('[', 'utf-8');
+console.time(`Execution time for Mortgage data of ${lines}lines`);
 startWritingMortgage(mortgageStream, 'utf-8', () => {
-  console.time(`Execution time for Mortgage data of ${lines}lines`);
-  mortgageStream.end();
+  mortgageStream.write(']', 'utf-8');
   console.timeEnd(`Execution time for Mortgage data of ${lines}lines`);
+  mortgageStream.end();
 });
