@@ -9,7 +9,7 @@ const arangoConnection = require('../controller/arango');
 const db = require('../model/arango');
 
 const app = express();
-const PORT = 7001;
+const PORT = 7002;
 
 const publicPath = path.join(__dirname, '..', 'client', 'dist');
 app.use(parser.json());
