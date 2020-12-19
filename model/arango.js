@@ -4,8 +4,16 @@ const auth = require('../authentication');
 
 const db = new Database({
   url: 'http://54.215.245.140:8529',
+  agentOptions: {
+    maxSockets: 350,
+    keepAlive: true,
+  },
+  LoadBalancingStragegy: 'ROUND_ROBIN',
   databaseName: 'trulia',
   auth: { username: auth.username, password: auth.password },
+  QueryOptions: {
+    stream: true,
+  },
 });
 
 const findMortgageList = (id, callback) => {

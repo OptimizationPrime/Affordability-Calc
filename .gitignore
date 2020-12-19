@@ -7,7 +7,7 @@ client/dist/bundle.js
 *.log
 
 # authentication information
-authentication.js
+# authentication.js
 
 DataBase/dataGen/csv
 DataBase/dataGen/json
